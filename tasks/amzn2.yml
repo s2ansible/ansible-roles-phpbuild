@@ -1,0 +1,13 @@
+---
+- yum:
+    name: "{{ packages }}"
+    state: present
+
+- stat:
+    path: "{{ destination}}"
+  register: phpbuild
+
+- git:
+    repo: https://github.com/php-build/php-build.git
+    dest: "{{ destination }}"
+  when: not phpbuild.stat.exists
