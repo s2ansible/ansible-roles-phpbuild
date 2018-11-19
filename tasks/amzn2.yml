@@ -1,13 +1,16 @@
 ---
-- yum:
-    name: "{{ packages }}"
+- name: Install phpbuild packages
+  yum:
+    name: "{{ phpbuild_packages }}"
     state: present
 
-- stat:
-    path: "{{ destination}}"
-  register: phpbuild
+- name: Check phpbuild directory
+  stat:
+    path: "{{ phpbuild_destination}}"
+  register: phpbuild_dest
 
-- git:
+- name: Install phpbuild
+  git:
     repo: https://github.com/php-build/php-build.git
-    dest: "{{ destination }}"
-  when: not phpbuild.stat.exists
+    dest: "{{ phpbuild_destination }}"
+  when: not phpbuild_dest.stat.exists
